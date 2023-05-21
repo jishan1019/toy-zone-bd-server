@@ -5,6 +5,8 @@ app.use(cors())
 const port = process.env.PORT || 3000;
 require('dotenv').config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const { ObjectId } = require("mongodb");
+
 
 
 app.get('/', (req, res) => {
@@ -42,6 +44,13 @@ async function run() {
       res.send(jobs);
     });
 
+    app.get("/singleToy/:id", async (req, res) => {
+      console.log(req.params.id);
+      const jobs = await toysCollection.findOne({
+        _id: new ObjectId(req.params.id),
+      });
+      res.send(jobs);
+    });
 
 
 
