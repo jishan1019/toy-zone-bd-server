@@ -46,11 +46,10 @@ async function run() {
     });
 
     app.get("/singleToy/:id", async (req, res) => {
-      console.log(req.params.id);
-      const jobs = await toysCollection.findOne({
+      const singleToy = await toysCollection.findOne({
         _id: new ObjectId(req.params.id),
       });
-      res.send(jobs);
+      res.send(singleToy);
     });
 
     app.get("/toysByName/:name", async (req, res) => {
@@ -89,6 +88,20 @@ async function run() {
       res.send(result)
     })
 
+    app.put("/updateToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const body = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          title: body.title,
+          status: body.status,
+        },
+      };
+      const result = await toysCollection.updateOne(filter, updateDoc);
+      res.send(result)
+      
+    })
 
 
 
