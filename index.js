@@ -75,13 +75,17 @@ async function run() {
       }
     });
 
+    app.get('/myToys/:email', async (req, res) => {
+      const result = await toysCollection
+        .find({ sellerEmail: req.params.email })
+        .toArray()
+      res.send(result)
+    })
 
 
     app.post('/postToys', async (req, res) => {
       const body = req.body;
       const result = await toysCollection.insertOne(body);
-
-      console.log(result,body);
       res.send(result)
     })
 
