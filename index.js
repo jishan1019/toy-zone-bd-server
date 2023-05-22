@@ -104,6 +104,14 @@ async function run() {
     })
 
 
+    app.delete("/users/:id", async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toysCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
 
 
   await client.db("toy_zone_bd").command({ ping: 1 });
