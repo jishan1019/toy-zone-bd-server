@@ -7,6 +7,7 @@ require('dotenv').config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const { ObjectId } = require("mongodb");
 
+app.use(express.json())
 
 
 app.get('/', (req, res) => {
@@ -51,6 +52,40 @@ async function run() {
       });
       res.send(jobs);
     });
+
+    app.get("/toysByName/:name", async (req, res) => {
+      try {
+        const { name } = req.params;
+        const toysName = await toysCollection.find({ name }).toArray();
+        res.send(toysName);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred");
+      }
+    });
+
+    app.get("/toysByCategory/:category", async (req, res) => {
+      try {
+        const { category } = req.params;
+        const toys = await toysCollection.find({ category }).toArray();
+        res.send(toys);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred");
+      }
+    });
+
+
+
+    app.post('/postToys', async (req, res) => {
+      const body = req.body;
+      const result = await toysCollection.insertOne(body);
+
+      console.log(result,body);
+      res.send(result)
+    })
+
+
 
 
 
